@@ -59,7 +59,7 @@ Use this python script to generate reports from the ```weights\mufon_longdescrip
 Change the configurations inside ```generate_UFOReports.py```.
 ```
 conda activate tensorflow
-python generate_UFOReports.py
+python generate_UFOReports.py --count 50 --temperature 0.5 --prefix "UFO REPORT:" --length 550
 ```
 
 
