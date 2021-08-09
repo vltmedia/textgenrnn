@@ -1,4 +1,67 @@
-# textgenrnn
+# textgenrnn | UFO REPORT GENERATOR
+
+# Description
+This fork of textgenrnn is used to train & generate UFO Reports based on MUFON's reports between 2000 - 2010
+# Anaconda Environment Setup
+Use whatever versions you want to use, we are using Python 3.6 & Tensorflow 2.1.0
+## Create Environment
+```bash
+conda create -n "tensorflow" python=3.6
+conda activate tensorflow
+```
+## Install Tensorflow gpu
+Replace the version number if needed.
+```bash
+conda install tensorflow-gpu=2.1
+```
+
+## Manually Install Cuda
+The above command may install the appropriate versions of Cuda & cudnn for you, but just incase, it's better to just manually install the exact versions.
+Check your cuda & cudnn versions against your Tensorflow version [HERE](https://www.tensorflow.org/install/source#gpu).
+Replace the version numbers if needed.
+```bash
+conda install -c anaconda cudatoolkit=10.1
+conda install -c anaconda cudnn=7.6
+```
+
+## Fix Dependencies
+You may get h5py errors, if so you need to downgrade the h5py version that is automatically installed, along with the numpy version to work with the downgraded h5py version. 
+
+```
+pip install h5py==2.8.0 --force-reinstall
+pip install numpy==1.19.5
+pip install -U scikit-learn
+```
+
+### Example Errors:
+#### h5py Error:
+```
+  File "C:\Users\Justin Jaro\Anaconda3\lib\site-packages\tensorflow_core\python\keras\saving\hdf5_format.py", line 722, in load_weights_from_hdf5_group_by_name
+    original_keras_version = f.attrs['keras_version'].decode('utf8')
+AttributeError: 'str' object has no attribute 'decode'
+```
+
+#### Numpy Error:
+```
+NotImplementedError: Cannot convert a symbolic Tensor (rnn_1/strided_slice:0) to a numpy array.
+```
+
+# Train UFO Report
+Use this python script to continue training the model ```weights\mufon_longdescription_weights.hdf5```.
+Change the configurations inside ```train_UFO.py```.
+```
+conda activate tensorflow
+python train_UFO.py
+```
+
+# Generate UFO Report
+Use this python script to generate reports from the ```weights\mufon_longdescription_weights.hdf5``` model.
+Change the configurations inside ```generate_UFOReports.py```.
+```
+conda activate tensorflow
+python generate_UFOReports.py
+```
+
 
 ![dank text](/docs/textgenrnn_console.gif)
 
@@ -109,6 +172,8 @@ The model weights included with the package are trained on hundreds of thousands
 When fine-tuning the model on a new dataset of texts using textgenrnn, all layers are retrained. However, since the original pretrained network has a much more robust "knowledge" initially, the new textgenrnn trains faster and more accurately in the end, and can potentially learn new relationships not present in the original dataset (e.g. the [pretrained character embeddings](http://minimaxir.com/2017/04/char-embeddings/) include the context for the character for all possible types of modern internet grammar).
 
 Additionally, the retraining is done with a momentum-based optimizer and a linearly decaying learning rate, both of which prevent exploding gradients and makes it much less likely that the model diverges after training for a long time.
+
+
 
 ## Notes
 
